@@ -1,0 +1,151 @@
+{
+  "model": "PaperInceptionCNN_DSC_noBN_MixedPrecision",
+  "group_id": "NoSMOTE_noBN_MixedPrecision",
+  "total_params": 1658,
+  "evaluation_protocol": {
+    "split": "stratified_random_beat",
+    "patient_disjoint": false,
+    "warning": "Bundled checkpoints require patient-disjoint retraining for unseen-patient claims."
+  },
+  "mixed_precision_strategy": {
+    "method": "sensitivity_based_leave_one_out",
+    "four_bit_ratio": 0.4,
+    "four_bit_layers": [
+      "inception3.bottleneck.pointwise",
+      "inception1.branch_d1.pointwise",
+      "conv1.depthwise",
+      "inception1.branch_d3.pointwise",
+      "fc",
+      "inception1.bottleneck.depthwise",
+      "inception2.branch_d2.pointwise",
+      "inception2.branch_d3.pointwise",
+      "conv1.pointwise.0",
+      "inception1.branch_d2.depthwise",
+      "inception1.branch_d2.pointwise",
+      "inception3.branch_d3.depthwise"
+    ],
+    "eight_bit_layers": [
+      "inception2.branch_d1.depthwise",
+      "conv3.pointwise.0",
+      "inception2.branch_d1.pointwise",
+      "inception1.bottleneck.pointwise",
+      "inception3.branch_d1.pointwise",
+      "inception3.branch_d2.depthwise",
+      "inception3.branch_d1.depthwise",
+      "inception2.branch_d3.depthwise",
+      "inception3.branch_d2.pointwise",
+      "inception3.branch_d3.pointwise",
+      "conv3.depthwise",
+      "inception1.branch_d3.depthwise",
+      "conv2.pointwise.0",
+      "inception2.bottleneck.pointwise",
+      "inception3.bottleneck.depthwise",
+      "inception2.branch_d2.depthwise",
+      "conv2.depthwise",
+      "inception1.branch_d1.depthwise",
+      "inception2.bottleneck.depthwise"
+    ],
+    "activation_bits": 8,
+    "n_4bit_weights": 509,
+    "n_8bit_weights": 1144,
+    "fp32_bias_params": 5
+  },
+  "accuracy": {
+    "fp32_baseline": 0.9832764713049835,
+    "full_int8_fakequant_baseline": 0.976879493115633,
+    "full_int8_realquant_baseline": 0.981661995857195,
+    "mixed_precision_fakequant": 0.9775801145363714,
+    "mixed_precision_realquant": 0.9775801145363714
+  },
+  "delta_vs_full_int8": {
+    "mixed_fakequant_vs_full_int8_fakequant": 0.0007006214207383454,
+    "mixed_realquant_vs_full_int8_realquant": -0.004081881320823655,
+    "realquant_vs_fakequant": 0.0
+  },
+  "model_size": {
+    "fp32_raw_parameter_bytes": 6632,
+    "full_int8_packed_estimate_bytes": 3841,
+    "mixed_int4_int8_packed_estimate_bytes": 3587,
+    "python_reference_unpacked_buffer_bytes": 3841,
+    "compression_ratio_vs_fp32": 1.8488988012266518,
+    "note": "Packed estimates include per-channel weight qparams, per-layer activation qparams, and FP32 bias."
+  },
+  "metrics": {
+    "fakequant": {
+      "per_class": {
+        "F": {
+          "precision": 0.7477876106194691,
+          "recall": 0.7012448132780082,
+          "f1": 0.7237687366167024
+        },
+        "N": {
+          "precision": 0.9845080200226534,
+          "recall": 0.9916458118651553,
+          "f1": 0.988064025228727
+        },
+        "Q": {
+          "precision": 0.9794913863822805,
+          "recall": 0.990460389879718,
+          "f1": 0.9849453495566096
+        },
+        "S": {
+          "precision": 0.9037800687285223,
+          "recall": 0.6306954436450839,
+          "f1": 0.7429378531073446
+        },
+        "V": {
+          "precision": 0.9326705829191143,
+          "recall": 0.9511520737327189,
+          "f1": 0.9418206707734429
+        }
+      },
+      "macro": {
+        "precision": 0.909647533734408,
+        "recall": 0.8530397064801368,
+        "f1": 0.8763073270565652
+      }
+    },
+    "realquant": {
+      "per_class": {
+        "F": {
+          "precision": 0.7477876106194691,
+          "recall": 0.7012448132780082,
+          "f1": 0.7237687366167024
+        },
+        "N": {
+          "precision": 0.9845080200226534,
+          "recall": 0.9916458118651553,
+          "f1": 0.988064025228727
+        },
+        "Q": {
+          "precision": 0.9794913863822805,
+          "recall": 0.990460389879718,
+          "f1": 0.9849453495566096
+        },
+        "S": {
+          "precision": 0.9037800687285223,
+          "recall": 0.6306954436450839,
+          "f1": 0.7429378531073446
+        },
+        "V": {
+          "precision": 0.9326705829191143,
+          "recall": 0.9511520737327189,
+          "f1": 0.9418206707734429
+        }
+      },
+      "macro": {
+        "precision": 0.909647533734408,
+        "recall": 0.8530397064801368,
+        "f1": 0.8763073270565652
+      }
+    }
+  },
+  "checkpoint_evaluation": {
+    "trained_in_this_run": false,
+    "source_qat_epochs": 50,
+    "source_qat_lr": 5e-05,
+    "calibration_samples": 2048,
+    "batch_size": 64,
+    "seed": 42
+  }
+}

@@ -1,0 +1,95 @@
+======================================================================
+BAO CAO MIXED PRECISION QAT OPTIMIZED (8-bit + 4-bit)
+PaperInceptionCNN with DSC (no BatchNorm)
+======================================================================
+
+--- Chien luoc Mixed Precision ---
+Phuong phap: Sensitivity-based (leave-one-out analysis)
+INT4 ratio: 40% least-sensitive layers
+Activation: luon 8-bit
+
+Layer 4-bit (12):
+  inception3.bottleneck.pointwise: delta_acc = -0.001310
+  inception1.branch_d1.pointwise: delta_acc = -0.001158
+  conv1.depthwise: delta_acc = -0.000792
+  inception1.branch_d3.pointwise: delta_acc = -0.000457
+  fc: delta_acc = -0.000457
+  inception1.bottleneck.depthwise: delta_acc = -0.000426
+  inception2.branch_d2.pointwise: delta_acc = -0.000426
+  inception2.branch_d3.pointwise: delta_acc = -0.000396
+  conv1.pointwise.0: delta_acc = -0.000366
+  inception1.branch_d2.depthwise: delta_acc = -0.000274
+  inception1.branch_d2.pointwise: delta_acc = -0.000213
+  inception3.branch_d3.depthwise: delta_acc = -0.000183
+
+Layer 8-bit (19):
+  inception2.branch_d1.depthwise: delta_acc = -0.000122
+  conv3.pointwise.0: delta_acc = -0.000091
+  inception2.branch_d1.pointwise: delta_acc = -0.000030
+  inception1.bottleneck.pointwise: delta_acc = +0.000000
+  inception3.branch_d1.pointwise: delta_acc = +0.000030
+  inception3.branch_d2.depthwise: delta_acc = +0.000030
+  inception3.branch_d1.depthwise: delta_acc = +0.000091
+  inception2.branch_d3.depthwise: delta_acc = +0.000183
+  inception3.branch_d2.pointwise: delta_acc = +0.000244
+  inception3.branch_d3.pointwise: delta_acc = +0.000244
+  conv3.depthwise: delta_acc = +0.000274
+  inception1.branch_d3.depthwise: delta_acc = +0.000305
+  conv2.pointwise.0: delta_acc = +0.000366
+  inception2.bottleneck.pointwise: delta_acc = +0.000426
+  inception3.bottleneck.depthwise: delta_acc = +0.000426
+  inception2.branch_d2.depthwise: delta_acc = +0.000518
+  conv2.depthwise: delta_acc = +0.000701
+  inception1.branch_d1.depthwise: delta_acc = +0.000853
+  inception2.bottleneck.depthwise: delta_acc = +0.001036
+
+--- Accuracy ---
+Giai doan                                  Acc       
+-------------------------------------------------------
+FP32 baseline                              0.9833
+Full INT8 fake-quant baseline              0.9769
+Full INT8 real-quant baseline              0.9817
+Mixed Precision QAT (fake-quant)           0.9776
+Mixed Precision QAT (real-quant)           0.9776
+
+--- Comparison with full INT8 ---
+  Fake-quant vs Full INT8 fake-quant: +0.0007
+  Real-quant vs Full INT8 real-quant: -0.0041
+  Real-quant vs Fake-quant: +0.0000
+
+--- Kich thuoc model ---
+  FP32 raw params:              6,632 bytes
+  Full INT8 packed estimate:    3,841 bytes
+  Mixed packed estimate:        3,587 bytes
+  Python reference buffers:     3,841 bytes
+  He so nen vs FP32:         1.8489x
+  4-bit weights:      509
+  8-bit weights:      1,144
+  Tong params:        1,658
+  Note: Bao gom weight qparams per-channel, activation qparams va FP32 bias.
+
+--- Chi tiet theo lop -- Fake-Quant ---
+Class        Precision    Recall       F1          
+--------------------------------------------------
+F            0.7478       0.7012       0.7238      
+N            0.9845       0.9916       0.9881      
+Q            0.9795       0.9905       0.9849      
+S            0.9038       0.6307       0.7429      
+V            0.9327       0.9512       0.9418      
+Macro        0.9096       0.8530       0.8763      
+
+--- Chi tiet theo lop -- Real-Quant ---
+Class        Precision    Recall       F1          
+--------------------------------------------------
+F            0.7478       0.7012       0.7238      
+N            0.9845       0.9916       0.9881      
+Q            0.9795       0.9905       0.9849      
+S            0.9038       0.6307       0.7429      
+V            0.9327       0.9512       0.9418      
+Macro        0.9096       0.8530       0.8763      
+
+--- Cau hinh danh gia checkpoint ---
+  Trained in this run: No
+  Source QAT epochs: 50, LR: 5e-05
+  Batch size: 64, Seed: 42
+  Calibration samples: 2048
